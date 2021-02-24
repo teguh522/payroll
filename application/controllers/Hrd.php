@@ -29,20 +29,59 @@ class Hrd extends CI_Controller
     }
     function datakaryawan()
     {
+        $func = $this->input->get('func');
+        $id_row = $this->input->get('id');
+        if ($func == 'updatekaryawan') {
+            $data['getrow'] = $this->Mhrd->get_onedata('id_karyawan', $id_row, 'mkaryawan');
+            $data['action'] = base_url('hrd/update_karyawan');
+        } else {
+            $data['action'] = base_url('hrd/create_karyawan');
+        }
+        $data['hasil'] = $this->Mhrd->get_joinone_groupby(
+            'mkaryawan',
+            'mkaryawan.id_group=mgroup.id_group',
+            'mgroup',
+            'id_karyawan',
+            'DESC'
+        );
+        $data['group'] = $this->Mhrd->get_all_groupby('mgroup', 'id_group', 'DESC');
+        $this->load->view('vheaderlogin');
+        $this->load->view('vmenu');
+        $this->load->view('hrd/vkaryawan', $data);
+        $this->load->view('vfooterlogin');
     }
 
     function create_karyawan()
     {
+        $data = array(
+            'id_group' => $this->input->post('id_group'),
+            'nama_karyawan' => $this->input->post('nama_karyawan'),
+            'jabatan' => $this->input->post('jabatan'),
+            'status_karyawan' => $this->input->post('status_karyawan'),
+        );
+        $this->Mhrd->create_data('mkaryawan', $data);
+        $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
+        redirect('hrd/datakaryawan');
     }
     function update_karyawan()
     {
+        $id = $this->input->post('id_karyawan');
+        $data = array(
+            'id_group' => $this->input->post('id_group'),
+            'nama_karyawan' => $this->input->post('nama_karyawan'),
+            'jabatan' => $this->input->post('jabatan'),
+            'status_karyawan' => $this->input->post('status_karyawan'),
+        );
+        $this->Mhrd->update_data('id_karyawan', $id, $data, 'mkaryawan');
+        $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
+        redirect('hrd/datakaryawan');
     }
     function groupkaryawan()
     {
         $func = $this->input->get('func');
         $id_row = $this->input->get('id');
         if ($func == 'updategroup') {
-            $data['getrow'] = $this->Mhrd->get_dataone('id_group', $id_row, 'mgroup');
+            $data['getrow'] = $this->Mhrd->get_onedata('id_group', $id_row, 'mgroup');
             $data['action'] = base_url('hrd/update_group');
         } else {
             $data['action'] = base_url('hrd/create_group');
@@ -62,6 +101,16 @@ class Hrd extends CI_Controller
         $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
         redirect('hrd/groupkaryawan');
     }
+    function update_group()
+    {
+        $id = $this->input->post('id_group');
+        $data = array(
+            'nama_group' => $this->input->post('nama_group')
+        );
+        $this->Mhrd->update_data('id_group', $id, $data, 'mgroup');
+        $this->session->set_flashdata('msg', 'Berhasil di Update!');
+        redirect('hrd/groupkaryawan');
+    }
     public function delete()
     {
         $func = $this->input->get('func');
@@ -70,6 +119,10 @@ class Hrd extends CI_Controller
             $this->Mhrd->delete('id_group', $id, 'mgroup');
             $this->session->set_flashdata('msg', 'Terhapus!');
             redirect('hrd/groupkaryawan');
+        } else if ($func == 'datakaryawan') {
+            $this->Mhrd->delete('id_karyawan', $id, 'mkaryawan');
+            $this->session->set_flashdata('msg', 'Terhapus!');
+            redirect('hrd/datakaryawan');
         }
     }
 }

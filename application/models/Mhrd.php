@@ -22,6 +22,16 @@ class Mhrd extends CI_Model
         }
         return null;
     }
+    function get_joinone_groupby($tabel, $coloum, $tabel2, $order, $conf)
+    {
+        $this->db->join($tabel2, $coloum);
+        $this->db->order_by($order, $conf);
+        $data = $this->db->get($tabel);
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }
+        return null;
+    }
     function create_data($tabel, $data)
     {
         $this->db->insert($tabel, $data);
@@ -30,5 +40,10 @@ class Mhrd extends CI_Model
     {
         $this->db->where($coloum, $where);
         $this->db->delete($tabel);
+    }
+    function update_data($coloum, $where, $data, $tabel)
+    {
+        $this->db->where($coloum, $where);
+        $this->db->update($tabel, $data);
     }
 }
