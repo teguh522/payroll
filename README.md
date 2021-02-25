@@ -34,7 +34,7 @@ Fitur dan Modul masing-masing Panel
 - Laporan gaji dibulan yang sedang berjalan secara real time bedsarkan KPI
 - Laporan Performa Karyawan
 - Tambah / Edit variabel KPI karyawan
-- Tambah/edit data karyawan
+- ~~Tambah/edit data karyawan~~
 - Tambah/edit Matriks karyawan
 
 4. Panel Supervisor

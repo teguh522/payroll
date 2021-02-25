@@ -27,6 +27,12 @@ class Hrd extends CI_Controller
     {
         $this->groupkaryawan();
     }
+    function cariatasan()
+    {
+        $param = $this->input->get('param');
+        $data = $this->Mhrd->caridatalike('nama_karyawan', $param, 'mkaryawan');
+        echo json_encode($data);
+    }
     function datakaryawan()
     {
         $func = $this->input->get('func');
@@ -58,6 +64,7 @@ class Hrd extends CI_Controller
             'nama_karyawan' => $this->input->post('nama_karyawan'),
             'jabatan' => $this->input->post('jabatan'),
             'status_karyawan' => $this->input->post('status_karyawan'),
+            'atasan_langsung' => $this->input->post('atasan'),
         );
         $this->Mhrd->create_data('mkaryawan', $data);
         $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
@@ -71,6 +78,7 @@ class Hrd extends CI_Controller
             'nama_karyawan' => $this->input->post('nama_karyawan'),
             'jabatan' => $this->input->post('jabatan'),
             'status_karyawan' => $this->input->post('status_karyawan'),
+            'atasan_langsung' => $this->input->post('atasan'),
         );
         $this->Mhrd->update_data('id_karyawan', $id, $data, 'mkaryawan');
         $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');

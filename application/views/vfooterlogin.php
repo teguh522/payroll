@@ -22,68 +22,7 @@
 
   <link href="<?php echo base_url() ?>assets/vendor/select2.min.css" rel="stylesheet" />
   <script src="<?php echo base_url() ?>assets/vendor/select2.min.js"></script>
-  <script>
-      var detik = <?= isset($detik) ? $detik : 0; ?>;
-      var menit = <?= isset($menit) ? $menit : 0; ?>;
-      var jam = <?= isset($jam) ? $jam : 0; ?>;
-      let ambilparam = new URLSearchParams(window.location.search);
 
-      function hitung() {
-          setTimeout(hitung, 1000);
-
-          if (menit < 10 && jam == 0) {
-              var peringatan = 'style="color:red"';
-          };
-
-          $('#timer').html(
-              '<h6 align="center"' + peringatan + '>Sisa waktu anda <br />' + jam + ' jam : ' + menit + ' menit : ' + detik + ' detik</h6>'
-          );
-
-          detik--;
-
-          if (detik < 0) {
-              detik = 59;
-              menit--;
-
-              if (menit < 0) {
-                  menit = 59;
-                  jam--;
-
-                  if (jam < 0) {
-                      clearInterval(hitung);
-                      var frmSoal = document.getElementById("form-selesai-tes");
-                      var p = ambilparam.get('kategori_soal');
-                      if (p != null) {
-                          $.ajax({
-                              method: 'POST',
-                              url: '<?= base_url('mulaites/habis_waktu') ?>',
-                              cache: false,
-                              data: {
-                                  id_kategori: p
-                              },
-                              success: function() {
-                                  window.location = "<?= base_url('dashboard') ?>"
-                              }
-                          })
-                      }
-
-                  }
-              }
-          }
-      }
-      hitung();
-
-      function detailnilai(id) {
-          $('div').remove('#id-detail-laporan')
-          $("#detail-laporan").append(`
-            <div id="id-detail-laporan">
-            <iframe src="<?= base_url('/dashboard/printnilai') ?>?id=${id}" 
-            style="width:100%; height:400px;" frameborder="0"></iframe>
-            </div>
-          `)
-          $('#detaillaporan').modal('show')
-      }
-  </script>
   <script>
       $(function() {
           let searchParams = new URLSearchParams(window.location.search);
@@ -98,14 +37,15 @@
               e.preventDefault();
               $('#form-hidden').show('slow');
           });
-          $('#penerima-email').select2({
+
+          $('#cariatasan').select2({
               width: '100%',
               minimumInputLength: 3,
               ajax: {
                   type: "GET",
                   dataType: "json",
                   cache: false,
-                  url: '<?= base_url() ?>sendemail/get_penerima',
+                  url: '<?= base_url() ?>hrd/cariatasan',
                   data: function(params) {
                       var query = {
                           param: params.term.replace(/ /g, " "),
@@ -116,34 +56,8 @@
                       return {
                           results: $.map(data, function(item) {
                               return {
-                                  text: `${item.email} | ${item.nama}`,
-                                  id: item.email
-                              }
-                          })
-                      };
-                  }
-              }
-          });
-          $('#caripelamar').select2({
-              width: '100%',
-              minimumInputLength: 3,
-              ajax: {
-                  type: "GET",
-                  dataType: "json",
-                  cache: false,
-                  url: '<?= base_url() ?>admin/caripelamarjson',
-                  data: function(params) {
-                      var query = {
-                          param: params.term.replace(/ /g, " "),
-                      }
-                      return query;
-                  },
-                  processResults: function(data) {
-                      return {
-                          results: $.map(data, function(item) {
-                              return {
-                                  text: `${item.nama} | ${item.noktp} | ${item.posisi}`,
-                                  id: item.id_submit
+                                  text: `${item.nama_karyawan} | ${item.jabatan}`,
+                                  id: item.nama_karyawan
                               }
                           })
                       };

@@ -22,6 +22,15 @@ class Mhrd extends CI_Model
         }
         return null;
     }
+    function caridatalike($kolom, $where2, $tabel)
+    {
+        $this->db->like($kolom, $where2);
+        $data = $this->db->get($tabel);
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }
+        return null;
+    }
     function get_joinone_groupby($tabel, $coloum, $tabel2, $order, $conf)
     {
         $this->db->join($tabel2, $coloum);

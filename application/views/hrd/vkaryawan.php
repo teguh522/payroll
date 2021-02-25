@@ -16,7 +16,7 @@
                     <div class="body">
                         <div id="form-hidden">
                             <form id="basic-form" autocomplete="off" method="post" enctype="multipart/form-data" action="<?php if (isset($action)) echo $action ?>" novalidate>
-                                <input type="hidden" name="id_karyawan" value="<?php if (isset($getrow)) echo $getrow->id_group ?>">
+                                <input type="hidden" name="id_karyawan" value="<?php if (isset($getrow)) echo $getrow->id_karyawan ?>">
                                 <div class="form-group">
                                     <label>Group</label>
                                     <select class="custom-select" name="id_group" data-parsley-required data-parsley-trigger-after-failure="change" data-parsley-errors-container="#error-multiselect">
@@ -44,9 +44,17 @@
                                     <label>Status Karyawan</label>
                                     <input type="text" name="status_karyawan" class="form-control" value="<?php if (isset($getrow)) echo $getrow->status_karyawan ?>" required>
                                 </div>
+                                <div class="form-group">
+                                    <label>Atasan Langsung</label>
+                                    <select id="cariatasan" class="js-example-basic-multiple" name="atasan">
+                                        <?php if (isset($getrow)) { ?>
+                                            <option value=<?= $getrow->atasan_langsung ?>><?= $getrow->atasan_langsung ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
                                 <br>
                                 <button type="submit" class="btn btn-primary"><?php echo (isset($getrow)) ? 'Edit' : 'Simpan'; ?></button>
-                                <a href="<?php echo base_url('hrd/groupkaryawan') ?>" class="btn btn-primary">Batal</a>
+                                <a href="<?php echo base_url('hrd/datakaryawan') ?>" class="btn btn-primary">Batal</a>
                             </form>
                         </div>
 
