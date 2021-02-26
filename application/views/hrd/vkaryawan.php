@@ -48,7 +48,15 @@
                                     <label>Atasan Langsung</label>
                                     <select id="cariatasan" class="js-example-basic-multiple" name="atasan">
                                         <?php if (isset($getrow)) { ?>
-                                            <option value=<?= $getrow->atasan_langsung ?>><?= $getrow->atasan_langsung ?></option>
+                                            <option value=<?= $getrow->atasan_langsung ?>selected><?= $getrow->atasan_langsung ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Karyawan</label>
+                                    <select id="cariemail" class="js-example-basic-multiple" name="id_auth">
+                                        <?php if (isset($getrow)) { ?>
+                                            <option value=<?= $getrow->id_auth ?>selected><?= $getrow->email ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>

@@ -64,14 +64,14 @@
                   }
               }
           });
-          $('#cariperusahaan').select2({
+          $('#cariemail').select2({
               width: '100%',
               minimumInputLength: 2,
               ajax: {
                   type: "GET",
                   dataType: "json",
                   cache: false,
-                  url: '<?= base_url() ?>admin/cariperusahaanjson',
+                  url: '<?= base_url() ?>hrd/cariemail',
                   data: function(params) {
                       var query = {
                           param: params.term.replace(/ /g, " "),
@@ -82,63 +82,15 @@
                       return {
                           results: $.map(data, function(item) {
                               return {
-                                  text: `${item.nama_usaha}|${item.lokasi_usaha}`,
-                                  id: item.id_perusahaan
+                                  text: `${item.email}`,
+                                  id: item.id_auth
                               }
                           })
                       };
                   }
               }
           });
-          const datadaerah = async () => {
-              const ambiltoken = await fetch("https://x.rajaapi.com/poe")
-              const token = await ambiltoken.json()
-              $('#getprovinsi').select2({
-                  width: '100%',
-                  minimumResultsForSearch: Infinity,
-                  ajax: {
-                      type: "GET",
-                      dataType: "json",
-                      cache: false,
-                      url: `https://x.rajaapi.com/MeP7c5ne${token.token}/m/wilayah/provinsi`,
-                      processResults: function(data) {
-                          return {
-                              results: $.map(data.data, function(item) {
-                                  return {
-                                      text: item.name,
-                                      id: `${item.id}|${item.name}`
-                                  }
-                              })
-                          };
-                      }
-                  }
-              });
-              $("#getprovinsi").on("select2:select", function() {
-                  let val = $(this).val().split("|");
-                  $('#getkota').select2({
-                      width: '100%',
-                      minimumResultsForSearch: Infinity,
-                      ajax: {
-                          type: "GET",
-                          dataType: "json",
-                          cache: false,
-                          url: `https://x.rajaapi.com/MeP7c5ne${token.token}/m/wilayah/kabupaten?idpropinsi=${val[0]}`,
-                          processResults: function(data) {
-                              return {
-                                  results: $.map(data.data, function(item) {
-                                      return {
-                                          text: item.name,
-                                          id: `${item.id}|${item.name}`
-                                      }
-                                  })
-                              };
-                          }
-                      }
-                  });
-              });
 
-          }
-          datadaerah()
           $('#summernote').summernote({
               //   toolbar: [
               //       ['style', ['bold', 'italic', 'underline', 'clear']],

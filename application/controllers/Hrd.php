@@ -33,20 +33,34 @@ class Hrd extends CI_Controller
         $data = $this->Mhrd->caridatalike('nama_karyawan', $param, 'mkaryawan');
         echo json_encode($data);
     }
+    function cariemail()
+    {
+        $param = $this->input->get('param');
+        $data = $this->Mhrd->caridatalike('email', $param, 'auth');
+        echo json_encode($data);
+    }
     function datakaryawan()
     {
         $func = $this->input->get('func');
         $id_row = $this->input->get('id');
         if ($func == 'updatekaryawan') {
-            $data['getrow'] = $this->Mhrd->get_onedata('id_karyawan', $id_row, 'mkaryawan');
+            $data['getrow'] = $this->Mhrd->get_twodata(
+                'id_karyawan',
+                $id_row,
+                'mkaryawan',
+                'auth',
+                'mkaryawan.id_auth=auth.id_auth'
+            );
             $data['action'] = base_url('hrd/update_karyawan');
         } else {
             $data['action'] = base_url('hrd/create_karyawan');
         }
-        $data['hasil'] = $this->Mhrd->get_joinone_groupby(
+        $data['hasil'] = $this->Mhrd->get_jointwo_groupby(
             'mkaryawan',
             'mkaryawan.id_group=mgroup.id_group',
             'mgroup',
+            'mkaryawan.id_auth=auth.id_auth',
+            'auth',
             'id_karyawan',
             'DESC'
         );
@@ -65,6 +79,7 @@ class Hrd extends CI_Controller
             'jabatan' => $this->input->post('jabatan'),
             'status_karyawan' => $this->input->post('status_karyawan'),
             'atasan_langsung' => $this->input->post('atasan'),
+            'id_auth' => $this->input->post('id_auth'),
         );
         $this->Mhrd->create_data('mkaryawan', $data);
         $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
@@ -79,6 +94,7 @@ class Hrd extends CI_Controller
             'jabatan' => $this->input->post('jabatan'),
             'status_karyawan' => $this->input->post('status_karyawan'),
             'atasan_langsung' => $this->input->post('atasan'),
+            'id_auth' => $this->input->post('id_auth'),
         );
         $this->Mhrd->update_data('id_karyawan', $id, $data, 'mkaryawan');
         $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
