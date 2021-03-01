@@ -27,6 +27,71 @@ class Hrd extends CI_Controller
     {
         $this->groupkaryawan();
     }
+    function kpikaryawan()
+    {
+        $data['action'] = base_url('hrd/carikpi');
+        $this->load->view('vheaderlogin');
+        $this->load->view('vmenu');
+        $this->load->view('hrd/vcarikpi', $data);
+        $this->load->view('vfooterlogin');
+    }
+    function carikpi()
+    {
+        $id_karyawan = $this->input->get('karyawan');
+        $data['id_karyawan'] = $id_karyawan;
+        $func = $this->input->get('func');
+        $id_row = $this->input->get('id');
+        if ($func == 'updatekpi') {
+            $data['getrow'] = $this->Mhrd->get_twodata(
+                'id_kpi',
+                $id_row,
+                'mkpi',
+                'mkaryawan',
+                'mkpi.id_karyawan=mkaryawan.id_karyawan'
+            );
+            $data['action'] = base_url('hrd/update_kpi');
+        } else {
+            $data['action'] = base_url('hrd/create_kpi');
+        }
+        $data['hasil'] = $this->Mhrd->get_allwhere_groupby(
+            'mkpi',
+            'id_karyawan',
+            'DESC',
+            'id_karyawan',
+            $id_karyawan
+        );
+        $this->load->view('vheaderlogin');
+        $this->load->view('vmenu');
+        $this->load->view('hrd/vtkpi', $data);
+        $this->load->view('vfooterlogin');
+    }
+    function create_kpi()
+    {
+        $id_karyawan = $this->input->post('id_karyawan');
+        $data = array(
+            'id_karyawan' => $id_karyawan,
+            'nama_kpi' => $this->input->post('nama_kpi'),
+            'bobot_target' => $this->input->post('bobot_target'),
+            'nominal' => $this->input->post('nominal'),
+        );
+        $this->Mhrd->create_data('mkpi', $data);
+        $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
+        redirect("hrd/carikpi?karyawan=$id_karyawan");
+    }
+    function update_kpi()
+    {
+        $id = $this->input->post('id_kpi');
+        $id_karyawan = $this->input->post('id_karyawan');
+        $data = array(
+            'id_karyawan' => $id_karyawan,
+            'nama_kpi' => $this->input->post('nama_kpi'),
+            'bobot_target' => $this->input->post('bobot_target'),
+            'nominal' => $this->input->post('nominal'),
+        );
+        $this->Mhrd->update_data('id_kpi', $id, $data, 'mkpi');
+        $this->session->set_flashdata('msg', 'Berhasil Tersimpan!');
+        redirect("hrd/carikpi?karyawan=$id_karyawan");
+    }
     function cariatasan()
     {
         $param = $this->input->get('param');
@@ -147,6 +212,11 @@ class Hrd extends CI_Controller
             $this->Mhrd->delete('id_karyawan', $id, 'mkaryawan');
             $this->session->set_flashdata('msg', 'Terhapus!');
             redirect('hrd/datakaryawan');
+        } else if ($func == 'deletekpi') {
+            $karyawan = $this->input->get('karyawan');
+            $this->Mhrd->delete('id_kpi', $id, 'mkpi');
+            $this->session->set_flashdata('msg', 'Terhapus!');
+            redirect("hrd/carikpi?karyawan=$karyawan");
         }
     }
 }

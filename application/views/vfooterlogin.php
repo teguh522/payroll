@@ -90,6 +90,32 @@
                   }
               }
           });
+          $('#carikaryawan').select2({
+              width: '100%',
+              minimumInputLength: 3,
+              ajax: {
+                  type: "GET",
+                  dataType: "json",
+                  cache: false,
+                  url: '<?= base_url() ?>hrd/cariatasan',
+                  data: function(params) {
+                      var query = {
+                          param: params.term.replace(/ /g, " "),
+                      }
+                      return query;
+                  },
+                  processResults: function(data) {
+                      return {
+                          results: $.map(data, function(item) {
+                              return {
+                                  text: `${item.nama_karyawan} | ${item.jabatan}`,
+                                  id: item.id_karyawan
+                              }
+                          })
+                      };
+                  }
+              }
+          });
 
           $('#summernote').summernote({
               //   toolbar: [
