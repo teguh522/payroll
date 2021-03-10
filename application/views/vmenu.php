@@ -25,7 +25,7 @@
 
     <div id="left-sidebar" class="sidebar">
         <div class="navbar-brand">
-            <a href="<?php echo base_url() ?>dashboard"><span>Sistem Recruitment</span></a>
+            <a href="<?php echo base_url() ?>dashboard"><span>Sistem Payroll</span></a>
             <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i class="lnr lnr-menu icon-close"></i></button>
         </div>
         <div class="sidebar-scroll">
@@ -46,8 +46,8 @@
                             <?php
                             if (isset($data)) {
                                 echo $data->nama;
-                            } else if ($this->session->userdata('level') == 'user') {
-                                echo "-";
+                            } else if ($this->session->userdata('level') == 'staff') {
+                                echo $this->session->userdata('email');
                             } else if ($this->session->userdata('level') == 'admin') {
                                 echo "Administrator";
                             } else if ($this->session->userdata('level') == 'hrd') {
@@ -69,6 +69,8 @@
                         <li><a href="<?php echo base_url() ?>hrd/datakaryawan"><i class="icon-user-following"></i><span>Data Karyawan</span></a></li>
                         <li><a href="<?php echo base_url() ?>hrd/groupkaryawan"><i class="icon-folder-alt"></i><span>Group Karyawan</span></a></li>
                         <li><a href="<?php echo base_url() ?>hrd/kpikaryawan"><i class="icon-bar-chart"></i><span>KPI Karyawan</span></a></li>
+                    <?php } else if ($this->session->userdata('level') == 'staff') { ?>
+                        <li><a href="<?php echo base_url() ?>staff"><i class="icon-bar-chart"></i><span>MY KPI</span></a></li>
                     <?php } ?>
                 </ul>
             </nav>

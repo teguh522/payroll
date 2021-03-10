@@ -9,7 +9,6 @@ class Auth extends CI_Controller
         parent::__construct();
 
         $this->load->model('Mauth');
-        $this->load->model('Muser');
     }
 
     public function index()
@@ -20,7 +19,7 @@ class Auth extends CI_Controller
             } else if ($this->session->userdata('level') == 'admin') {
                 redirect('admin', 'refresh');
             } else {
-                redirect('admin/postlowongan', 'refresh');
+                redirect('hrd', 'refresh');
             }
         } else {
             $this->load->view('vheaderlogin');

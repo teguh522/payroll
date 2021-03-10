@@ -72,6 +72,27 @@ class Mhrd extends CI_Model
         }
         return null;
     }
+    function get_jointwo_wheregroupby(
+        $tabel,
+        $coloum,
+        $tabel2,
+        $coloum2,
+        $tabel3,
+        $order,
+        $conf,
+        $coloum3,
+        $where
+    ) {
+        $this->db->join($tabel2, $coloum);
+        $this->db->join($tabel3, $coloum2);
+        $this->db->where($coloum3, $where);
+        $this->db->order_by($order, $conf);
+        $data = $this->db->get($tabel);
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }
+        return null;
+    }
     function create_data($tabel, $data)
     {
         $this->db->insert($tabel, $data);

@@ -6,7 +6,6 @@ class Supervisor extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Muser');
         if (($this->session->userdata('id_login') == null) && ($this->session->userdata('status') == null)) {
             $this->session->sess_destroy();
             redirect('auth', 'refresh');
